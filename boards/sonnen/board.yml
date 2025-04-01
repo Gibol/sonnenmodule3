@@ -1,0 +1,7 @@
+board:
+  name: batteriemodule3
+  full_name: BATTERIEMODULE3
+  vendor: infineon
+  socs:
+  - name: xmc4400
+

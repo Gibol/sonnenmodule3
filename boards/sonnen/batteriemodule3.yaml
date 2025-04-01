@@ -1,0 +1,20 @@
+identifier: batteriemodule3
+name: SONNEN BATTERIEMODULE 3
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 32
+flash: 512
+supported:
+  - adc
+  - dma
+  - gpio
+  - spi
+  - uart
+  - watchdog
+  - can
+  - rtc
+vendor: sonnen

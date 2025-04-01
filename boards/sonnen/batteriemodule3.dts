@@ -1,0 +1,148 @@
+/dts-v1/;
+
+#include <infineon/cat3/xmc/xmc4400_F64x512.dtsi>
+#include <infineon/cat3/xmc/xmc4400_F64x512-intc.dtsi>
+#include "batteriemodule3-pinctrl.dtsi"
+
+/ {
+	model = "Sonnen BatterieModule3";
+	compatible = "sonnen,batteriemodule3", "infineon,xmc4400",
+						"infineon,xmc4xxx";
+
+	aliases {
+		die-temp0 = &die_temp;
+		watchdog0 = &wdt0;
+		rtc = &rtc;
+		led0 = &led0;
+		led1 = &led1;
+		led2 = &led2;
+		watchdogreset = &watchdog_gpio;
+		bquart = &usic1ch0;
+		bqwakeup = &bq_wakeup;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		led0: led_0 {
+			gpios = <&gpio2 2 GPIO_ACTIVE_LOW>;
+		};
+
+		led1: led_1 {
+			gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
+		};
+
+		led2: led_2 {
+			gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
+		};
+
+		watchdog_gpio: watchdog_gpio {
+			gpios = <&gpio2 0 GPIO_ACTIVE_HIGH>;
+		};
+
+		bq_wakeup: bq_wakeup {
+			gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+	chosen {
+		zephyr,sram = &dsram1;
+		zephyr,flash = &flash0;
+		zephyr,console = &usic1ch1;
+		zephyr,shell-uart = &usic1ch1;
+		zephyr,flash-controller = &flash_controller;
+		zephyr,code-partition = &code_partition;
+		zephyr,canbus = &can_node1;
+	};
+};
+
+&psram1 {
+	compatible = "zephyr,memory-region", "mmio-sram";
+	zephyr,memory-region = "PSRAM1";
+};
+
+&dsram2 {
+	compatible = "zephyr,memory-region", "mmio-sram";
+	zephyr,memory-region = "DSRAM2";
+};
+
+&flash_controller {
+	status = "okay";
+};
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		code_partition: partition@0 {
+			reg = <0x0 0x80000>;
+			read-only;
+		};
+
+		storage_partition: partition@80000 {
+			label = "storage";
+			reg = <0x80000 0x80000>;
+		};
+	};
+};
+
+&cpu0 {
+	clock-frequency = <120000000>;
+};
+
+&usic1ch1 {
+	compatible = "infineon,xmc4xxx-uart";
+	current-speed = <115200>;
+	pinctrl-0 = <&uart_tx_p0_1_u1c1 &uart_rx_p0_0_u1c1>;
+	pinctrl-names = "default";
+	input-src = "DX0D";
+	interrupts = <90 1 91 1>;
+	interrupt-names = "tx", "rx";
+	fifo-start-offset = <0>;
+	fifo-tx-size = <0>;
+	fifo-rx-size = <0>;
+	status = "okay";
+};
+
+&usic1ch0 {
+	compatible = "infineon,xmc4xxx-uart";
+	current-speed = <250000>;
+	stop-bits = "1";
+	pinctrl-0 = <&uart_tx_p0_5_u1c0 &uart_rx_p0_4_u1c0>;
+	pinctrl-names = "default";
+	input-src = "DX0A";
+	interrupts = <94 1 95 1>;
+	interrupt-names = "tx_bq", "rx_bq";
+	fifo-start-offset = <0>;
+	fifo-tx-size = <0>;
+	fifo-rx-size = <64>;
+	status = "okay";
+};
+
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&gpio2 {
+	status = "okay";
+};
+
+&can {
+	message-objects = <64>;
+	clock-prescaler = <6>;
+};
+
+&can_node1 {
+	status = "okay";
+	input-src = "RXDA";
+	pinctrl-0 = <&can_tx_p2_7_node1 &can_rx_p2_6_node1>;
+	pinctrl-names = "default";
+	bus-speed = <500000>;
+};

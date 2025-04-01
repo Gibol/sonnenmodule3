@@ -1,0 +1,39 @@
+/*
+ * Copyright (c) 2022 Schlumberger
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <infineon/cat3/xmc/xmc4400_F64x512-pinctrl.dtsi>
+
+&uart_tx_p0_1_u1c1 {
+	drive-strength = "strong-soft-edge";
+	drive-push-pull;
+	hwctrl = "disabled";
+};
+
+&uart_rx_p0_0_u1c1 {
+	drive-strength = "strong-soft-edge";
+	hwctrl = "disabled";
+};
+
+&uart_tx_p0_5_u1c0 {
+	drive-strength = "strong-soft-edge";
+	drive-push-pull;
+	hwctrl = "disabled";
+};
+
+&uart_rx_p0_4_u1c0 {
+	drive-strength = "strong-soft-edge";
+	hwctrl = "disabled";
+};
+
+&can_tx_p2_7_node1 {
+	drive-strength = "strong-soft-edge";
+	drive-push-pull;
+	hwctrl = "disabled";
+};
+
+&can_rx_p2_6_node1 {
+	drive-strength = "strong-soft-edge";
+	hwctrl = "disabled";
+};
